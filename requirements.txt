@@ -1,4 +1,6 @@
-pathlib2==2.3.7.post1
-python-dotenv==1.0.0
-pyyaml==6.0.1
-requests==2.31.0
+bcrypt==4.0.1
+asyncio==3.4.3
+web3==6.0.0
+fastapi==0.104.0
+uvicorn==0.24.0
+aiohttp==3.8.5

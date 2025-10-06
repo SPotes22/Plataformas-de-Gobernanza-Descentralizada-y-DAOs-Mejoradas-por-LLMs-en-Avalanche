@@ -1,0 +1,28 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Instalar solo dependencias esenciales
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copiar requirements e instalar
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar aplicación
+COPY . .
+
+# Establecer permisos
+RUN chmod +x scripts/*.py run_organizer.sh
+
+# Variables de entorno para optimización
+ENV SECURE_WRITER_VERBOSE=0
+ENV PROJECT_PATH=/app
+
+# Exponer puerto
+EXPOSE 8000
+
+# Comando que ejecuta ambos servicios en paralelo
+CMD ["bash", "-c", "python secure_file_writer_v2.py & uvicorn secure_writer_integration:app --host 0.0.0.0 --port 8000"]
