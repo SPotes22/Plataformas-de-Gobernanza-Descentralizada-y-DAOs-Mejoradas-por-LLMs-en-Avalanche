@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  llm-dao-core:
+    build: ./core
+    ports: ["8501:8501"]
+    environment:
+      - AVALANCHE_RPC=https://api.avax.network/ext/bc/C/rpc
+      - PICONIN_CONTRACT=0x742d35Cc6634C0532925a3b8D
+    
+  agi-orchestrator:
+    build: ./agi
+    ports: ["5001:5001"]
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+x-next-tan: "Implementar auto-scaling para picos de votación en governance"

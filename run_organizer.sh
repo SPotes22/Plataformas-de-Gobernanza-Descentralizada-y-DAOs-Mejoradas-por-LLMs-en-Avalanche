@@ -8,6 +8,7 @@ echo "🏗️  INICIANDO ORGANIZACIÓN DE ARCHIVOS..."
 mkdir -p scripts
 
 # Ejecutar el organizador
+source venv/bin/activate
 python organize_chat_files.py
 
 echo "✅ ORGANIZACIÓN COMPLETADA!"
