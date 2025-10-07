@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  arachne-safewriter:
+    build:
+      context: ..
+      dockerfile: docker/dockerfile.yaml
+    container_name: arachne_safe_writer
+    volumes:
+      - ..:/app
+      - ./arachne_backups:/app/arachne_backups
+      - ./logs:/app/logs
+    environment:
+      - CICD_MODE=1
+      - AVALANCHE_RPC=${AVALANCHE_RPC_URL}
+      - ENVIRONMENT=development
+    working_dir: /app
+    command: >
+      sh -c "python scripts/safe_writer_v3.py &&
+             tail -f /dev/null"
+    healthcheck:
+      test: ["CMD", "python", "-c", "from scripts.safe_writer_v3 import arachne_writer; print('🕷️ Arachne OK')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  avalanche-node:
+    image: avaplatform/node:latest
+    container_name: avalanche_node
+    ports:
+      - "9650:9650"
+      - "9651:9651"
+    environment:
+      - AVALANCHE_NETWORK=testnet
+    volumes:
+      - avalanche_data:/root/.avalanche
+
+volumes:
+  avalanche_data:

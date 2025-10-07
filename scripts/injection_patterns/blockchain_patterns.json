@@ -1,0 +1,23 @@
+{
+  "block_id_injection": [
+    "block[_\\-]?id=.*[;&|]",
+    "0x[0-9a-f]{64}.*[;'\\\"]",
+    "'.*OR.*1=1.*block",
+    "block.*drop.*table",
+    "block.*union.*select",
+    "'.*;.*--.*block",
+    "block.*<script>",
+    "block_id.*%.*%"
+  ],
+  "rpc_injection": [
+    "\\\"method\\\":\\s*\\\"[^\\\"].*[;{]",
+    "params.*\\[.*\\].*[;&]",
+    "\\\"jsonrpc\\\":\\s*\\\"[0-9].*[^\\\"]"
+  ],
+  "consensus_attack": [
+    "double.*spend",
+    "reorg.*attack",
+    "51%.*attack",
+    "sybil.*attack"
+  ]
+}

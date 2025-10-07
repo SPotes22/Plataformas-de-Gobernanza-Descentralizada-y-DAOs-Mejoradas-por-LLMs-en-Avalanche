@@ -1,0 +1,11 @@
+2025-10-07 10:11:42 | INFO | 🕷️ Starting monitoring for: avalanche_node_logger_service
+2025-10-07 10:11:43 | ERROR | ❌ Container not found: avalanche_node_logger_service
+2025-10-07 10:12:13 | ERROR | ❌ Container not found: avalanche_node_logger_service
+2025-10-07 10:12:43 | ERROR | ❌ Container not found: avalanche_node_logger_service
+2025-10-07 10:13:14 | ERROR | ❌ Container not found: avalanche_node_logger_service
+2025-10-07 10:13:45 | ERROR | ❌ Container not found: avalanche_node_logger_service
+2025-10-07 10:14:15 | ERROR | ❌ Container not found: avalanche_node_logger_service
+2025-10-07 10:14:47 | ERROR | ❌ Container not found: avalanche_node_logger_service
+2025-10-07 10:15:18 | ERROR | ❌ Container not found: avalanche_node_logger_service
+2025-10-07 10:15:48 | ERROR | ❌ Container not found: avalanche_node_logger_service
+2025-10-07 10:16:13 | INFO | 🛑 Daemon stopped by user

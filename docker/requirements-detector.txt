@@ -1,0 +1,4 @@
+# Paquetes mínimos - entropía controlada
+psutil==5.9.0
+docker==6.0.0
+

@@ -1,0 +1,112 @@
+version: '3.8'
+
+services:
+  arachne-safewriter:
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=1
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../scripts:/app/scripts:rw
+      - ../.env:/app/.env:ro
+    command: >
+      sh -c "python scripts/safe_writer_v3.py --dev-mode &&
+             echo '🕷️ Arachne Dev Mode Ready' &&
+             tail -f /dev/null"
+    stdin_open: true
+    tty: true
+    profiles:
+      - development
+
+  # ✅ MISMO PERFIL para todos los servicios relacionados
+  avalanche-node:
+    image: avaplatform/avalanchego:latest
+    container_name: avalanche_node
+    ports:
+      - "9650:9650"
+      - "9651:9651"
+    environment:
+      - AVALANCHE_NETWORK=testnet
+    volumes:
+      - avalanche_data:/root/.avalanche
+    profiles:
+      - avalanche  # ✅ Mismo perfil
+
+# En docker-compose.override.yml
+  avalanche_injection_detector:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.detector
+    container_name: avalanche_injection_detector
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./training_data:/app/training_data
+      - ./injection_patterns:/app/injection_patterns
+      - ./detection_logs:/app/detection_logs
+      - ../scripts:/app/scripts:ro
+    working_dir: /app
+    command: ["python", "scripts/avalanche_injection_detector.py"]
+    depends_on:
+      - avalanche-node-secure
+      - avalanche-node-vulnerable
+    restart: unless-stopped
+    profiles:
+      - detection
+
+  avalanche_node_logger_service:
+    image: avaplatform/avalanchego:latest
+    container_name: avalanche_node_logger_service
+    ports:
+      - "9660:9650"  # ✅ Puerto diferente para evitar conflicto
+      - "9661:9651"
+    environment:
+      - AVALANCHE_NETWORK=testnet
+    volumes:
+      - avalanche_logger_data:/root/.avalanche
+    profiles:
+      - avalanche  # ✅ Mismo perfil
+
+  avalanche_daemon_monitor:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.daemon
+    container_name: avalanche_daemon
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./daemon_logs:/app/daemon_logs
+    depends_on:
+      - avalanche_node_logger_service
+    restart: unless-stopped
+    profiles:
+      - avalanche  # ✅ Mismo perfil
+
+  redis-cache:
+    image: redis:7-alpine
+    container_name: arachne_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    profiles:
+      - development
+
+  postgres-db:
+    image: postgres:15
+    container_name: arachne_postgres
+    environment:
+      - POSTGRES_DB=arachne
+      - POSTGRES_USER=arachne_user
+      - POSTGRES_PASSWORD=arachne_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    profiles:
+      - development
+
+volumes:
+  avalanche_data:
+  avalanche_logger_data:
+  redis_data:
+  postgres_data:

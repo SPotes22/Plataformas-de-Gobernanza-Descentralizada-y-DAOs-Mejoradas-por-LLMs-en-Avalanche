@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-10-07T10:46:55.353392",
+  "mode": "training",
+  "secure_node": {
+    "entropy": 0.0,
+    "detections": {
+      "block_id_injection": {},
+      "rpc_injection": {},
+      "consensus_attack": {}
+    },
+    "total_detections": 0,
+    "status": {}
+  },
+  "vulnerable_node": {
+    "entropy": 0.0,
+    "detections": {
+      "block_id_injection": {},
+      "rpc_injection": {},
+      "consensus_attack": {}
+    },
+    "total_detections": 0,
+    "status": {}
+  },
+  "anomaly_score": 0.0
+}
