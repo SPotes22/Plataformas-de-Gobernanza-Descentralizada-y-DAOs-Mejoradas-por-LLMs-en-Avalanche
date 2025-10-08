@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Archivos disponibles</h2>
+
+<ul>
+    {% for archivo in archivos %}
+        <li><a href="{{ url_for('descargar', nombre=archivo) }}">{{ archivo }}</a></li>
+    {% else %}
+        <li>No hay archivos en la carpeta</li>
+    {% endfor %}
+</ul>
+
+<a href="{{ url_for('inicio') }}">Volver</a>
+{% endblock %}
+

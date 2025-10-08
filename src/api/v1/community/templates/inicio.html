@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Bienvenido {{ current_user.id }} ({{ current_user.rol }})</h2>
+<ul>
+    <li><a href="{{ url_for('listar') }}">Listar archivos</a></li>
+    {% if current_user.rol != 'usuario' %}
+    <li><a href="{{ url_for('subir') }}">Subir archivo</a></li>
+    {% endif %}
+    {% if current_user.rol == 'administrator' %}
+    <li><a href="{{ url_for('eliminar') }}">Eliminar archivos</a></li>
+    {% endif %}
+    <li><a href="{{ url_for('logout') }}">Cerrar sesión</a></li>
+</ul>
+{% endblock %}
+
