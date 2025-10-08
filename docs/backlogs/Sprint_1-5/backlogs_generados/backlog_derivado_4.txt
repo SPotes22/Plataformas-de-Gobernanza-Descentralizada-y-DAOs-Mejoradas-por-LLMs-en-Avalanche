@@ -1,0 +1,18 @@
+BACKLOG EXPORT: BL_02_2.5
+========================================
+FECHA:    2025-10-03
+USUARIO:  arachne
+MODO:     DYNAMIC
+
+QUÉ HACER:
+CHORE:integracion del modulo tools (butcher -> corta el archivo en partes de 128 lineas.-> para el endpoint final que es /enhanced_form_unformatted_saples.) 
+
+POR QUÉ:
+Automatización Tin-Tan - De idea a acción 
+
+PARA QUÉ:
+Optimizar flujo desarrollo y documentación
+
+CÓMO:
+Backlog Reader v2.1 - Multi-export seguro
+========================================

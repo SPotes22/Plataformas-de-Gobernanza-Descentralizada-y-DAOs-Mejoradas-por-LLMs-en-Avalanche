@@ -1,0 +1,18 @@
+BACKLOG EXPORT: BL_06_6
+========================================
+FECHA:    2025-10-30
+USUARIO:  arachne
+MODO:     DYNAMIC
+
+QUÉ HACER:
+chore: Implementacion de HMAC y Customjwt con Paranoid vault as default salter para que bcypt sea util con esos salting aleatoreos
+
+POR QUÉ:
+Automatización Tin-Tan - De idea a acción 
+
+PARA QUÉ:
+Optimizar flujo desarrollo y documentación
+
+CÓMO:
+Backlog Reader v2.1 - Multi-export seguro
+========================================

@@ -1,0 +1,15 @@
+{
+    "backlog": "BL_02_2",
+    "metadata": {
+        "usuario": "arachne",
+        "timestamp": "2026-10-26",
+        "version": "backlog-reader-2.1",
+        "mode": "DYNAMIC"
+    },
+    "contenido": {
+        "que": "FEAT: Pipeline de CI/CD ,para agilizar deploys del app.py (nuevos routes import)",
+        "por_que": "Automatización Tin-Tan - De idea a acción",
+        "para_que": "Optimizar flujo desarrollo y documentación",
+        "como": "Backlog Reader v2.1 - Multi-export seguro"
+    }
+}

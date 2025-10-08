@@ -1,0 +1,18 @@
+BACKLOG EXPORT: BL_06_5
+========================================
+FECHA:    2025-10-03
+USUARIO:  arachne
+MODO:     DYNAMIC
+
+QUÉ HACER:
+CHORE: octo modules 4 -> de modular warrior -> /safe_prediction -> 82% > confianza /load -> carga el .pkl desde .{root}/secrets/models/compressed/  /export -> exporta el .pkl | .npy matrix /scan -> check avalible modules /health -> public endpoint (just satatus of the last) /escalate -> cuando la confianza es menor a 82% -> crea un log y ese log lo vamos a cargar en la vista /admin/dashboard/actions 
+
+POR QUÉ:
+Automatización Tin-Tan - De idea a acción 
+
+PARA QUÉ:
+Optimizar flujo desarrollo y documentación
+
+CÓMO:
+Backlog Reader v2.1 - Multi-export seguro
+========================================

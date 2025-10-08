@@ -1,0 +1,15 @@
+{
+    "backlog": "BL_06_4",
+    "metadata": {
+        "usuario": "arachne",
+        "timestamp": "2025-10-03",
+        "version": "backlog-reader-2.1",
+        "mode": "DYNAMIC"
+    },
+    "contenido": {
+        "que": "CHORE: octo module 3  -> integracion del modulo tools (butcher -> corta el archivo en partes de 128 lineas.-> para el endpoint final que es /enhanced_form_unformatted_saples. y el endpoint /predict -> base de inputs/outputv -> safe by desing. nada de promt inyection) ",
+        "por_que": "Automatización Tin-Tan - De idea a acción",
+        "para_que": "Optimizar flujo desarrollo y documentación",
+        "como": "Backlog Reader v2.1 - Multi-export seguro"
+    }
+}
