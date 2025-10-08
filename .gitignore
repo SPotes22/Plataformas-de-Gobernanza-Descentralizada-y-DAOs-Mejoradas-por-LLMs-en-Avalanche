@@ -22,3 +22,5 @@ secrete/
 secret/
 /secret/
 /secret
+./secrets/models/compressed
+./run_organizer.sh

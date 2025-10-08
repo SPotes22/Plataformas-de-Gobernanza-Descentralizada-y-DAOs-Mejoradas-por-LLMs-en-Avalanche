@@ -1,0 +1,25 @@
+# Dockerfile.octo-kafka
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copiar requirements e instalar dependencias
+COPY requirements-kafka.txt .
+RUN pip install --no-cache-dir -r requirements-kafka.txt
+
+# Copiar scripts
+COPY octo_kafka_consumer.py .
+COPY octo_kafka_producer.py .
+
+# Health check para Kafka
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD python -c "from confluent_kafka import Consumer; c = Consumer({'bootstrap.servers': 'localhost:9092', 'group.id': 'health-check'}); c.close()" || exit 1
+
+CMD ["python", "octo_kafka_consumer.py"]

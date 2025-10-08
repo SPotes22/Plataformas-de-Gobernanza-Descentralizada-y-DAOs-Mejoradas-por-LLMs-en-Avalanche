@@ -1,0 +1,16 @@
+# lightweight Python image for dev Flask front
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# copy minimal requirements (adjust if you have a requirements file)
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Copy only if you want baked image; we also mount repo in compose for dev.
+COPY src/api/endpoints/minimal_html_endpoint.py /app/minimal_html_endpoint.py
+
+EXPOSE 5000
+
+CMD ["python", "minimal_html_endpoint.py"]
+

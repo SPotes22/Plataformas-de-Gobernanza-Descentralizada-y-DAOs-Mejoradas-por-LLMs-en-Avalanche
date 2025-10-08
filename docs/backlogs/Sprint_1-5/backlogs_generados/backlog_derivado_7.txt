@@ -1,0 +1,18 @@
+BACKLOG EXPORT: BL_02_5
+========================================
+FECHA:    2025-10-30
+USUARIO:  arachne
+MODO:     DYNAMIC
+
+QUÉ HACER:
+chore: Push github version con spolia smart contracts. ref ()
+
+POR QUÉ:
+Automatización Tin-Tan - De idea a acción 
+
+PARA QUÉ:
+Optimizar flujo desarrollo y documentación
+
+CÓMO:
+Backlog Reader v2.1 - Multi-export seguro
+========================================

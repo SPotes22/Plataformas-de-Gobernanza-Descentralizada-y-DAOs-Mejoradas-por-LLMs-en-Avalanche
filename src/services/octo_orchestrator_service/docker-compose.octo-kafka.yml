@@ -1,0 +1,38 @@
+# docker-compose.octo-kafka.yml
+version: '3.8'
+
+services:
+  octo-kafka-consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile.octo-kafka
+    container_name: octo_kafka_consumer
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - OCTO_GROUP=octo-orchestrator
+    volumes:
+      - ./src/services/octo_orchestrator_service:/app
+    depends_on:
+      - kafka
+    networks:
+      - arachne_net
+    command: ["python", "octo_kafka_consumer.py"]
+
+  octo-kafka-producer:
+    build:
+      context: .
+      dockerfile: Dockerfile.octo-kafka
+    container_name: octo_kafka_producer  
+    environment:
+      - KAFKA_BROKER=kafka:9092
+    volumes:
+      - ./src/services/octo_orchestrator_service:/app
+    depends_on:
+      - kafka
+    networks:
+      - arachne_net
+    command: ["python", "octo_kafka_producer.py"]
+
+networks:
+  arachne_net:
+    external: true

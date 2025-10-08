@@ -1,0 +1,26 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    gcc \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copiar requirements e instalar Python
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar el código
+COPY scripts/ ./scripts/
+COPY docker/ ./docker/
+
+# Crear directorios necesarios
+RUN mkdir -p /app/arachne_backups /app/logs
+
+# Exponer puertos necesarios
+EXPOSE 9650 9651
+
+# Comando por defecto
+CMD ["python", "scripts/safe_writer_v3.py"]

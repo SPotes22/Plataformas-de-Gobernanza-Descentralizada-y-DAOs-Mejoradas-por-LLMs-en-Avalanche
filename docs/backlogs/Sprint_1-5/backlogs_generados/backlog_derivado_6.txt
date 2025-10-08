@@ -1,0 +1,18 @@
+BACKLOG EXPORT: BL_02_4
+========================================
+FECHA:    2025-10-03
+USUARIO:  arachne
+MODO:     DYNAMIC
+
+QUÉ HACER:
+Chore: Implementacion de endpoints que subsidie la API /predict, /learn /enhanced_from_unformatted_samples 
+
+POR QUÉ:
+Automatización Tin-Tan - De idea a acción 
+
+PARA QUÉ:
+Optimizar flujo desarrollo y documentación
+
+CÓMO:
+Backlog Reader v2.1 - Multi-export seguro
+========================================

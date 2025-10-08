@@ -1,0 +1,18 @@
+BACKLOG EXPORT: BL_02_6
+========================================
+FECHA:    2025-12-3
+USUARIO:  arachne
+MODO:     DYNAMIC
+
+QUÉ HACER:
+CHORE: (user manual) | StockSpider : PiCoinDAO OctoMatrix-General-Implementation-Paper - The zero thrust policy - | 
+
+POR QUÉ:
+Automatización Tin-Tan - De idea a acción 
+
+PARA QUÉ:
+Optimizar flujo desarrollo y documentación
+
+CÓMO:
+Backlog Reader v2.1 - Multi-export seguro
+========================================

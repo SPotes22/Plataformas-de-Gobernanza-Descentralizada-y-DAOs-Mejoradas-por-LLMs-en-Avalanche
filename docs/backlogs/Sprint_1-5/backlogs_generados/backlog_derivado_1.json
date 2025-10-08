@@ -1,0 +1,15 @@
+{
+    "backlog": "BL_02_0",
+    "metadata": {
+        "usuario": "arachne",
+        "timestamp": "2025-10-25",
+        "version": "backlog-reader-2.1",
+        "mode": "DYNAMIC"
+    },
+    "contenido": {
+        "que": "HOTFIX: SAVESTATE TIN-TAN/Sprint2 ->Ia as a service. auto lockout initialized -> crear script que genere un  espacio vectorial de 6*128, la dimension de 6, es para las 6w-> [que,porque,paraque,como,cuando,donde] y el de 128 para representar un valor que dice la cantidad de caracteres que contiene -> imagina que es el len(script.[py,sh,json,md]) para cada tin y tan que hemos hecho para este problema. SOLO CREAR SCRIPT E IR AMPLIANDO EN .json CADA MSG el VECTOR (no s eque otro formato sepas usar xd, no es sacar embedings es sacar el espacio entropico de nuestra solucion. deepseek no es agi, pero necesito que lo sea tampoco, solo ir ampliando esa matrix hasta que te diga EJECUTA EL BACLOG {backlog_id -> formato (BL_0{id_sprint}_{item})}) ",
+        "por_que": "Automatización Tin-Tan - De idea a acción",
+        "para_que": "Optimizar flujo desarrollo y documentación",
+        "como": "Backlog Reader v2.1 - Multi-export seguro"
+    }
+}

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard — Benchmarks & Auth</title>
+  <style>
+    :root{--bg:#0f172a;--card:#0b1220;--muted:#94a3b8;--accent:#60a5fa;--success:#10b981}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,#071026 0%,#071935 100%);color:#e6eef8}
+    .container{max-width:1100px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between}
+    h1{margin:0;font-size:20px}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:18px}
+    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,.6)}
+    .small{font-size:13px;color:var(--muted)}
+    button{background:var(--accent);border:none;color:#06203a;padding:8px 12px;border-radius:8px;cursor:pointer}
+    .muted{color:var(--muted)}
+    .row{display:flex;gap:10px;align-items:center}
+    label{display:block;font-size:13px;margin-bottom:6px;color:var(--muted)}
+    input[type=text],select,textarea{width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.04);background:#071428;color:inherit}
+    .result{font-family:monospace;background:#031022;padding:10px;border-radius:8px;overflow:auto;max-height:220px}
+    .stat{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.03)}
+    .actions{display:flex;gap:8px}
+    .endpoint-list{display:flex;flex-direction:column;gap:8px}
+    .chip{background:rgba(255,255,255,.03);padding:6px 10px;border-radius:999px;font-size:12px}
+    .footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    .ok{color:var(--success)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Admin Dashboard — Benchmarks &amp; Auth</h1>
+      <div class="small">Conectado como: <span class="chip">{{ username }}</span> | API: <span class="chip">{{ api_version }}</span></div>
+    </header>
+
+    <!-- Resto del template corregido -->
+    <!-- ... -->
+  </div>
+</body>
+</html>

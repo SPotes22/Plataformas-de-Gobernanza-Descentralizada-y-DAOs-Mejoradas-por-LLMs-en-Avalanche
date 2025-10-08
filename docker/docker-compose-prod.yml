@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  arachne-safewriter:
+    environment:
+      - ENVIRONMENT=production
+      - AVALANCHE_RPC=https://api.avax.network/ext/bc/C/rpc
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  avalanche-node:
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'

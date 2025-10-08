@@ -1,0 +1,37 @@
+2025-10-07 10:42:03 | INFO | 🔍 Block Injection Detector iniciado - Modo: training
+2025-10-07 10:42:03 | INFO | 🕷️ Iniciando detección de inyecciones block_id
+2025-10-07 10:42:11 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 1
+2025-10-07 10:42:42 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 2
+2025-10-07 10:43:13 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 3
+2025-10-07 10:43:45 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 4
+2025-10-07 10:44:15 | ERROR | Error obteniendo métricas de avalanche_node_secure: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:44:16 | ERROR | Error obteniendo métricas de avalanche_node_vulnerable: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:44:16 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 5
+2025-10-07 10:44:47 | ERROR | Error obteniendo métricas de avalanche_node_secure: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:44:48 | ERROR | Error obteniendo métricas de avalanche_node_vulnerable: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:44:48 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 6
+2025-10-07 10:45:19 | ERROR | Error obteniendo métricas de avalanche_node_secure: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:45:20 | ERROR | Error obteniendo métricas de avalanche_node_vulnerable: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:45:20 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 7
+2025-10-07 10:45:51 | ERROR | Error obteniendo métricas de avalanche_node_secure: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:45:51 | ERROR | Error obteniendo métricas de avalanche_node_vulnerable: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:45:51 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 8
+2025-10-07 10:46:22 | ERROR | Error obteniendo métricas de avalanche_node_secure: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:46:23 | ERROR | Error obteniendo métricas de avalanche_node_vulnerable: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:46:23 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 9
+2025-10-07 10:46:53 | ERROR | Error obteniendo métricas de avalanche_node_secure: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:46:55 | ERROR | Error obteniendo métricas de avalanche_node_vulnerable: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:46:55 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 10
+2025-10-07 10:47:29 | ERROR | Error obteniendo métricas de avalanche_node_secure: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:47:31 | ERROR | Error obteniendo métricas de avalanche_node_vulnerable: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:47:31 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 11
+2025-10-07 10:48:02 | ERROR | Error obteniendo métricas de avalanche_node_secure: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:48:07 | ERROR | Error obteniendo métricas de avalanche_node_vulnerable: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:48:07 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 12
+2025-10-07 10:48:39 | ERROR | Error obteniendo métricas de avalanche_node_secure: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:48:41 | ERROR | Error obteniendo métricas de avalanche_node_vulnerable: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:48:41 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 13
+2025-10-07 10:49:12 | ERROR | Error obteniendo métricas de avalanche_node_secure: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:49:22 | ERROR | Error obteniendo métricas de avalanche_node_vulnerable: Expecting value: line 1 column 1 (char 0)
+2025-10-07 10:49:22 | INFO | 🟢 NORMAL | Anomalía: 0.00 | Secure: 0 | Vulnerable: 0 | Cycle: 14
+2025-10-07 10:49:28 | INFO | 🛑 Detección detenida por usuario

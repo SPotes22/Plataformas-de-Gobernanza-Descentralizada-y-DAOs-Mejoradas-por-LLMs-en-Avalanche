@@ -1,0 +1,253 @@
+version: '3.8'
+
+services:
+  # 🕷️ Safe Writer
+  arachne-safewriter:
+    build:
+      context: ..
+      dockerfile: docker/dockerfile.yaml
+    container_name: arachne_safe_writer
+    volumes:
+      - ..:/app
+      - ./arachne_backups:/app/arachne_backups
+      - ./logs:/app/logs
+    working_dir: /app
+    command: >
+      sh -c "python scripts/safe_writer_v3.py --daemon-mode &&
+             echo '🕷️ Arachne Safe Writer (Kafka Mode)' &&
+             tail -f /dev/null"
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - SAFE_MODE=git_style_backup
+      - CICD_MODE=1
+      - ENVIRONMENT=development
+    healthcheck:
+      test: ["CMD", "python", "-c", "print('ok')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    profiles: [development, kafka]
+
+  # ✅ NODO SEGURO
+  avalanche-node-secure:
+    image: avaplatform/avalanchego:latest
+    container_name: avalanche_node_secure
+    ports:
+      - "9650:9650"
+      - "9651:9651"
+    environment:
+      - NETWORK_ID=fuji
+      - CONFIG_FILE=/config/secure_config.json
+    volumes:
+      - avalanche_secure_data:/root/.avalanchego
+      - ./config/secure:/config:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9650/ext/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    profiles: [avalanche, kafka]
+
+  # 🔴 NODO VULNERABLE (training data)
+  avalanche-node-vulnerable:
+    image: avaplatform/avalanchego:latest
+    container_name: avalanche_node_vulnerable
+    ports:
+      - "9660:9650"
+      - "9661:9651"
+    environment:
+      - NETWORK_ID=fuji
+      - CONFIG_FILE=/config/vulnerable_config.json
+    volumes:
+      - avalanche_vulnerable_data:/root/.avalanchego
+      - ./config/vulnerable:/config:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9650/ext/info"]
+      interval: 10s
+      timeout: 5s
+      retries: 2
+    profiles: [avalanche, kafka]
+
+  # 🕷️ Detector de inyecciones
+  avalanche_injection_detector:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.detector
+    container_name: avalanche_detector
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./training_data:/app/training_data
+      - ./injection_patterns:/app/injection_patterns
+    depends_on:
+      - avalanche-node-secure
+      - avalanche-node-vulnerable
+    environment:
+      - MODE=training
+      - DETECTION_THRESHOLD=0.85
+    profiles:
+      - detection
+
+  # ✅ Kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    profiles:
+      - kafka
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    expose:
+      - "9092"
+    profiles:
+      - kafka
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    expose:
+      - "8080"  # solo interno
+    profiles:
+      - kafka
+    networks:
+      - arachne_net
+
+  # ✅ Producers y Consumers siguen igual, no necesitan cambios
+  avalanche-producer-secure:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.kafka-producer
+    container_name: kafka_producer_secure
+    environment:
+      - NODE_NAME=avalanche_node_secure
+      - NODE_TYPE=secure
+      - KAFKA_BROKER=kafka:9092
+      - TOPIC_LOGS=avalanche_logs
+      - TOPIC_METRICS=avalanche_metrics
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./kafka_logs:/app/logs
+    depends_on:
+      - kafka
+      - avalanche-node-secure
+    restart: unless-stopped
+    profiles:
+      - kafka
+
+  avalanche-producer-vulnerable:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.kafka-producer  
+    container_name: kafka_producer_vulnerable
+    environment:
+      - NODE_NAME=avalanche_node_vulnerable
+      - NODE_TYPE=vulnerable
+      - KAFKA_BROKER=kafka:9092
+      - TOPIC_LOGS=avalanche_logs
+      - TOPIC_METRICS=avalanche_metrics
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./kafka_logs:/app/logs
+    depends_on:
+      - kafka
+      - avalanche-node-vulnerable
+    restart: unless-stopped
+    profiles:
+      - kafka
+
+  avalanche-consumer-orchestrator:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.kafka-consumer
+    container_name: kafka_consumer_orchestrator
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - TOPIC_LOGS=avalanche_logs
+      - TOPIC_METRICS=avalanche_metrics
+      - CONSUMER_GROUP=orchestrator
+      - ORCHESTRATION_MODE=load_balancing
+    volumes:
+      - ./orchestration_logs:/app/logs
+    depends_on:
+      - kafka
+    restart: unless-stopped
+    profiles:
+      - kafka
+
+  avalanche-consumer-analyzer:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.kafka-consumer
+    container_name: kafka_consumer_analyzer  
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - TOPIC_LOGS=avalanche_logs
+      - TOPIC_METRICS=avalanche_metrics
+      - CONSUMER_GROUP=analyzer
+      - ORCHESTRATION_MODE=injection_detection
+    volumes:
+      - ./analysis_logs:/app/logs
+      - ./training_data:/app/training_data
+    depends_on:
+      - kafka
+    restart: unless-stopped
+    profiles:
+      - kafka
+
+  # 🔒 NGINX PROXY como único punto de entrada
+  nginx-proxy:
+    build:
+      context: ..
+    image: nginx:stable
+    container_name: arachne_nginx_proxy
+    volumes:
+      - ./nginx/conf.d/site.conf:/etc/nginx/conf.d/site.conf:ro
+      - ./nginx/.htpasswd:/etc/nginx/.htpasswd:ro
+    ports:
+      - "0.0.0.0:8080:80"
+    depends_on:
+      - kafka-ui
+      - flask_front
+    networks:
+      - arachne_net
+
+  # 🔒 Flask front solo accesible por proxy
+  flask_front:
+    build: ../src/api/endpoints
+    container_name: arachne_flask_front
+    command: python minimal_html_endpoint.py
+    expose:
+      - "5000"
+    networks:
+      - arachne_net
+
+networks:
+  arachne_net:
+    driver: bridge
+
+volumes:
+  avalanche_secure_data:
+  avalanche_vulnerable_data:
+

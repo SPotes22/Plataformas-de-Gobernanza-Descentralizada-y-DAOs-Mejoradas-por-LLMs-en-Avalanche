@@ -1,0 +1,31 @@
+name: PiCoinDAO Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Foundry
+      uses: foundry-rs/foundry-toolchain@v1
+      
+    - name: Run Tests
+      run: |
+        forge test
+        forge coverage
+        
+    - name: Gas Report
+      run: forge test --gas-report
+      
+    - name: Fuzz Tests
+      run: forge test --fuzz-runs 1000
+      
+    - name: Upload Coverage
+      uses: codecov/codecov-action@v3
