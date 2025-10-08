@@ -66,7 +66,6 @@ services:
     profiles: [avalanche, kafka]
     networks:
       - arachne_net
-
   avalanche-node-vulnerable:
     image: avaplatform/avalanchego:latest
     container_name: avalanche_node_vulnerable
@@ -87,7 +86,6 @@ services:
     profiles: [avalanche, kafka]
     networks:
       - arachne_net
-
   avalanche_injection_detector:
     build:
       context: ..
@@ -107,7 +105,6 @@ services:
       - detection
     networks:
       - arachne_net
-
   # -------------------------
   # Kafka cluster (zookeeper + kafka)
   # -------------------------
@@ -123,7 +120,6 @@ services:
       - kafka
     networks:
       - arachne_net
-
   kafka:
     image: confluentinc/cp-kafka:7.4.0
     container_name: kafka
@@ -144,7 +140,6 @@ services:
       - kafka
     networks:
       - arachne_net
-
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: kafka-ui
@@ -160,7 +155,6 @@ services:
       - kafka
     networks:
       - arachne_net
-
   # -------------------------
   # Producers / Consumers (no cambios)
   # -------------------------
@@ -186,7 +180,6 @@ services:
       - kafka
     networks:
       - arachne_net
-
   avalanche-producer-vulnerable:
     build:
       context: ..
@@ -295,4 +288,139 @@ services:
     profiles:
       - development
 
+  flask_auth:
+    build:
+      context: ../src/api/v1/auth/
+      dockerfile: dockerfile
+    container_name: arachne_flask_auth
+    ports:
+      - "5001:5001"
+    volumes:
+      - ../src/api/v1/auth:/app
+    networks:
+      - arachne_net
+    profiles:
+      - kafka
+      - development
+    depends_on:
+      - kafka
+      - arachne-safewriter  
+  octo-traffic-scanner:
+    build:
+      context: ../src/api/v1/octo-supervisor  # apunta a la carpeta de octo
+      dockerfile: dockerfile       # tu Dockerfile de octo
+    container_name: arachne_octo_matrix
+    ports:
+      - "5002:5002"
+    expose:
+      - "5002"
 
+    volumes:
+      - ../src/api/v1/octo-supervisor:/app
+    networks:
+      - arachne_net
+    profiles:
+      - development
+    depends_on:
+      - kafka
+      - arachne-safewriter    
+      - zookeeper
+
+  pichat:
+    build:
+      context: ../src/api/v1/community  # apunta a la carpeta de auth
+      dockerfile: dockerfile       # tu Dockerfile de auth
+    container_name: pichat_potesdev
+    ports:
+      - "5007:5007"  
+    volumes:
+      - ../src/api/v1/community:/app
+    networks:
+      - arachne_net
+    profiles:
+      - kafka
+      - development
+    depends_on:
+      - kafka
+      - arachne-safewriter
+
+  # -------------------------
+  # Octo Kafka Services (BL_06_2 & BL_06_3)
+  # -------------------------
+  octo-kafka-consumer:
+    build:
+      context: ../src/services/octo_orchestrator_service/
+      dockerfile: Dockerfile.octo-kafka
+    container_name: octo_kafka_consumer
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - OCTO_GROUP=octo-orchestrator
+      - PYTHONPATH=/app
+    volumes:
+      - ../src/services/octo_orchestrator_service:/app
+    working_dir: /app
+    depends_on:
+      - kafka
+      - avalanche-node-secure
+      - avalanche-node-vulnerable
+    restart: unless-stopped
+    profiles:
+      - kafka 
+    networks:
+      - arachne_net
+    command: >
+      sh -c "python octo_kafka_consumer.py &&
+             echo '🐙 Octo Kafka Consumer running' &&
+             tail -f /dev/null"
+
+  octo-kafka-producer:
+    build:
+      context: ../src/services/octo_orchestrator_service/
+      dockerfile: Dockerfile.octo-kafka
+    container_name: octo_kafka_producer
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - PYTHONPATH=/app
+    volumes:
+      - ../src/services/octo_orchestrator_service:/app
+    working_dir: /app
+    depends_on:
+      - kafka
+      - zookeeper
+    restart: unless-stopped
+    profiles:
+      - kafka
+    networks:
+      - arachne_net
+    command: >
+      sh -c "python octo_kafka_producer.py && echo '🐙 Octo Kafka Producer running' && tail -f /dev/null"
+
+  # -------------------------
+  # Octo Orchestrator (Integración con elect_leader.py)
+  # -------------------------
+  octo-orchestrator:
+    build:
+      context: ../src/services/octo_orchestrator_service/
+      dockerfile: Dockerfile.octo-orchestrator
+    container_name: octo_orchestrator
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - OCTO_GROUP=octo-orchestrator
+      - PYTHONPATH=/app
+    volumes:
+      - ../src/services/octo_orchestrator_service:/app
+      - ../logs/octo:/app/logs
+    working_dir: /app
+    depends_on:
+      - kafka
+      - octo-kafka-consumer
+      - octo-kafka-producer
+    ports:
+      - "5004:5004"
+    restart: unless-stopped
+    profiles:
+      - kafka
+    networks:
+      - arachne_net
+    command: >
+      sh -c "python octo_orchestrator_service.py && echo '🎯 Octo Orchestrator with Leader Election running' &&  tail -f /dev/null"
