@@ -226,7 +226,7 @@ class SimpleOctoConsumer(OctoKafkaConsumer):
 # Punto de entrada principal
 if __name__ == "__main__":
     consumer = OctoKafkaConsumer()
-    
+    """ #SIMPLE
     if consumer.start_simple():
         consumer.logger.info("🎯 Consumer running. Press Ctrl+C to stop.")
         try:
@@ -234,6 +234,26 @@ if __name__ == "__main__":
             while True:
                 time.sleep(10)
                 consumer.logger.info("💓 Consumer heartbeat")
+        except KeyboardInterrupt:
+            consumer.stop_consuming()
+            consumer.logger.info("👋 Consumer stopped by user")
+    else:
+        consumer.logger.error("💥 Failed to start consumer")
+        """
+    
+    # Opción 2: Usar OctoKafkaConsumer normal (CORREGIDO)
+    consumer = OctoKafkaConsumer()
+    
+    # Suscribirse a topics manualmente
+    if consumer.subscribe_to_topics(['agi_logs', 'avalanche_metrics', 'octo_messages']):
+        consumer.logger.info("🚀 Consumer initialized successfully")
+        consumer.start_consuming()
+        
+        try:
+            # Mantener vivo
+            while True:
+                time.sleep(10)
+                consumer.logger.info("💓 Consumer heartbeat - Waiting for messages...")
         except KeyboardInterrupt:
             consumer.stop_consuming()
             consumer.logger.info("👋 Consumer stopped by user")
